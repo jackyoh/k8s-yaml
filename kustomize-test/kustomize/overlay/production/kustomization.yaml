@@ -1,0 +1,28 @@
+resources:
+  - ../../base
+namePrefix: prod-
+namespace: production-namespace
+
+commonLabels:
+  type: prod-demo
+  app: prod-foo
+
+commonAnnotations:
+  note: Hello, I am Production!
+
+images:
+  - name: mikehsu0618/api-service
+    newTag: production
+patches:
+  - patch: |
+      - op: replace
+        path: /meta/name
+        value: the-prod-development
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: the-prod-container
+    target:
+      group: apps
+      kind: Deployment
+      version: v1
+      name: foo-development-v1
